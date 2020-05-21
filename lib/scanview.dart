@@ -32,28 +32,14 @@ class _ScanViewState extends State<ScanView> {
   }
 
   Future onScan(String data) async {
+    var uri = Uri.parse(data);
+    if(uri.host!='qr.thaichana.com'){
+      _key.currentState.startScan();
+      return;
+    }
     Navigator.pop(context);
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => Web(initialUrl: data)));
-    // await showCupertinoDialog(
-    //   context: context,
-    //   builder: (context) {
-    //     return CupertinoAlertDialog(
-    //       title: Text("ผลการสแกนรหัส"),
-    //       content: Text(data),
-    //       actions: <Widget>[
-    //         CupertinoDialogAction(
-    //           child: Text("ยืนยัน"),
-    //           onPressed: () {
-    //             Navigator.push(context,MaterialPageRoute(builder: (context) => Web(initialUrl:data)));
-
-    //             },
-    //         )
-    //       ],
-    //     );
-    //   },
-    // );
-    // _key.currentState.startScan();
   }
 
   @override

@@ -19,30 +19,13 @@ class _WebState extends State<Web> {
     webMenu = WebMenu(_controller.future);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('WebView'),
+        title: const Text('ตัวช่วย'),
         // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
         actions: <Widget>[
           NavigationControls(_controller.future),
           webMenu,
         ],
       ),
-      // body: WebView(
-      //   initialUrl: widget.initialUrl,
-      //   debuggingEnabled: true,
-      //   javascriptMode: JavascriptMode.unrestricted,
-      //   onWebViewCreated: (WebViewController webViewController) {
-      //     _controller.complete(webViewController);
-      //   },
-      //   javascriptChannels: <JavascriptChannel>[
-      //     _toasterJavascriptChannel(context),
-      //   ].toSet(),
-      //   onPageStarted: (String url) {
-      //     print('Page started loading: $url');
-      //   },
-      //   onPageFinished: (String url) {
-      //     print('Page finished loading: $url');
-      //   },
-      // ),
       body: Builder(builder: (BuildContext context) {
         return WebView(
           initialUrl: widget.initialUrl,
@@ -50,8 +33,6 @@ class _WebState extends State<Web> {
           onWebViewCreated: (WebViewController webViewController) {
             _controller.complete(webViewController);
           },
-          // TODO(iskakaushik): Remove this when collection literals makes it to stable.
-          // ignore: prefer_collection_literals
           javascriptChannels: <JavascriptChannel>[
             _toasterJavascriptChannel(context),
           ].toSet(),
@@ -83,12 +64,6 @@ class _WebState extends State<Web> {
             SnackBar(content: Text(message.message)),
           );
         });
-  }
-
-  @override
-  void dispose() {
-    webMenu.clearCookies(context);
-    super.dispose();
   }
 }
 
@@ -233,14 +208,14 @@ class NavigationControls extends StatelessWidget {
         final WebViewController controller = snapshot.data;
         return Row(
           children: <Widget>[
-            // IconButton(
-            //   icon: const Icon(Icons.replay),
-            //   onPressed: !webViewReady
-            //       ? null
-            //       : () {
-            //           controller.reload();
-            //         },
-            // ),
+            IconButton(
+              icon: const Icon(Icons.replay),
+              onPressed: !webViewReady
+                  ? null
+                  : () {
+                      controller.reload();
+                    },
+            ),
             IconButton(
               icon: const Icon(Icons.delete),
               onPressed: !webViewReady

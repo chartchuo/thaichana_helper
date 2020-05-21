@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'scanview.dart';
+import 'scanview.dart';
 import 'webview.dart';
 
 void main() => runApp(MyApp());
@@ -9,7 +10,8 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomePage());
+    return MaterialApp(home: ScanView());
+    // return MaterialApp(home: HomePage());
     // return MaterialApp(home: Web(initialUrl: 'https://google.com'));
   }
 }
