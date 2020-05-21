@@ -1,5 +1,5 @@
 name: thaichana_helper
-description: QR code scaner bundle with embeded web brower to improve privacy for scanning QR code chekin/checkout public area during COVID-19 situation.
+description: A new Flutter project.
 
 publish_to: 'none' 
 
@@ -11,20 +11,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+
   cupertino_icons: ^0.1.3
+
   permission_handler: '^3.0.0'
   flutter_qr_reader: ^1.0.3
   webview_flutter: ^0.3.22
-  flutter_launcher_icons: ^0.7.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter:
-  uses-material-design: true
 
-flutter_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/icon/icon.png"
+  uses-material-design: true
