@@ -4,7 +4,6 @@ import 'qr_reader.dart';
 import 'webview.dart';
 
 class ScanView extends StatefulWidget {
-  
   ScanView({Key key}) : super(key: key);
 
   @override
@@ -33,24 +32,27 @@ class _ScanViewState extends State<ScanView> {
   }
 
   Future onScan(String data) async {
-    await showCupertinoDialog(
-      context: context,
-      builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text("ผลการสแกนรหัส"),
-          content: Text(data),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              child: Text("ยืนยัน"),
-              onPressed: () {
-                Navigator.push(context,MaterialPageRoute(builder: (context) => Web(initialUrl:data)));
-                
-                },
-            )
-          ],
-        );
-      },
-    );
+    Navigator.pop(context);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => Web(initialUrl: data)));
+    // await showCupertinoDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return CupertinoAlertDialog(
+    //       title: Text("ผลการสแกนรหัส"),
+    //       content: Text(data),
+    //       actions: <Widget>[
+    //         CupertinoDialogAction(
+    //           child: Text("ยืนยัน"),
+    //           onPressed: () {
+    //             Navigator.push(context,MaterialPageRoute(builder: (context) => Web(initialUrl:data)));
+
+    //             },
+    //         )
+    //       ],
+    //     );
+    //   },
+    // );
     // _key.currentState.startScan();
   }
 

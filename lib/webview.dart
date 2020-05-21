@@ -13,37 +13,62 @@ class _WebState extends State<Web> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
 
+  WebMenu webMenu;
   @override
   Widget build(BuildContext context) {
+    webMenu = WebMenu(_controller.future);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter WebView example'),
+        title: const Text('WebView'),
         // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
         actions: <Widget>[
           NavigationControls(_controller.future),
-          SampleMenu(_controller.future),
+          webMenu,
         ],
       ),
-      // We're using a Builder here so we have a context that is below the Scaffold
-      // to allow calling Scaffold.of(context) so we can show a snackbar.
+      // body: WebView(
+      //   initialUrl: widget.initialUrl,
+      //   debuggingEnabled: true,
+      //   javascriptMode: JavascriptMode.unrestricted,
+      //   onWebViewCreated: (WebViewController webViewController) {
+      //     _controller.complete(webViewController);
+      //   },
+      //   javascriptChannels: <JavascriptChannel>[
+      //     _toasterJavascriptChannel(context),
+      //   ].toSet(),
+      //   onPageStarted: (String url) {
+      //     print('Page started loading: $url');
+      //   },
+      //   onPageFinished: (String url) {
+      //     print('Page finished loading: $url');
+      //   },
+      // ),
       body: Builder(builder: (BuildContext context) {
         return WebView(
           initialUrl: widget.initialUrl,
-          debuggingEnabled: true,
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController webViewController) {
             _controller.complete(webViewController);
           },
+          // TODO(iskakaushik): Remove this when collection literals makes it to stable.
+          // ignore: prefer_collection_literals
           javascriptChannels: <JavascriptChannel>[
             _toasterJavascriptChannel(context),
           ].toSet(),
+          navigationDelegate: (NavigationRequest request) {
+            if (request.url.startsWith('https://www.youtube.com/')) {
+              print('blocking navigation to $request}');
+              return NavigationDecision.prevent;
+            }
+            print('allowing navigation to $request');
+            return NavigationDecision.navigate;
+          },
           onPageStarted: (String url) {
             print('Page started loading: $url');
           },
           onPageFinished: (String url) {
             print('Page finished loading: $url');
           },
-          
           gestureNavigationEnabled: true,
         );
       }),
@@ -60,20 +85,22 @@ class _WebState extends State<Web> {
         });
   }
 
+  @override
+  void dispose() {
+    webMenu.clearCookies(context);
+    super.dispose();
+  }
 }
 
 enum MenuOptions {
-  // showUserAgent,
   listCookies,
   clearCookies,
-  addToCache,
   listCache,
   clearCache,
-  // navigationDelegate,
 }
 
-class SampleMenu extends StatelessWidget {
-  SampleMenu(this.controller);
+class WebMenu extends StatelessWidget {
+  WebMenu(this.controller);
 
   final Future<WebViewController> controller;
   final CookieManager cookieManager = CookieManager();
@@ -87,54 +114,36 @@ class SampleMenu extends StatelessWidget {
         return PopupMenuButton<MenuOptions>(
           onSelected: (MenuOptions value) {
             switch (value) {
-              // case MenuOptions.showUserAgent:
-              //   _onShowUserAgent(controller.data, context);
-              //   break;
               case MenuOptions.listCookies:
-                _onListCookies(controller.data, context);
+                listCookies(controller.data, context);
                 break;
               case MenuOptions.clearCookies:
-                _onClearCookies(context);
-                break;
-              case MenuOptions.addToCache:
-                _onAddToCache(controller.data, context);
+                clearCookies(context);
                 break;
               case MenuOptions.listCache:
-                _onListCache(controller.data, context);
+                listCache(controller.data, context);
                 break;
               case MenuOptions.clearCache:
-                _onClearCache(controller.data, context);
+                clearCache(controller.data, context);
                 break;
-              // case MenuOptions.navigationDelegate:
-              //   _onNavigationDelegateExample(controller.data, context);
-              //   break;
             }
           },
           itemBuilder: (BuildContext context) => <PopupMenuItem<MenuOptions>>[
-            // PopupMenuItem<MenuOptions>(
-            //   value: MenuOptions.showUserAgent,
-            //   child: const Text('Show user agent'),
-            //   enabled: controller.hasData,
-            // ),
             const PopupMenuItem<MenuOptions>(
               value: MenuOptions.listCookies,
-              child: Text('List cookies'),
+              child: Text('แสดงคุ้กกี้'),
             ),
             const PopupMenuItem<MenuOptions>(
               value: MenuOptions.clearCookies,
-              child: Text('Clear cookies'),
-            ),
-            const PopupMenuItem<MenuOptions>(
-              value: MenuOptions.addToCache,
-              child: Text('Add to cache'),
+              child: Text('ลบคุ้กกี้'),
             ),
             const PopupMenuItem<MenuOptions>(
               value: MenuOptions.listCache,
-              child: Text('List cache'),
+              child: Text('แสดงข้อมูล'),
             ),
             const PopupMenuItem<MenuOptions>(
               value: MenuOptions.clearCache,
-              child: Text('Clear cache'),
+              child: Text('ลบข้อมูล'),
             ),
           ],
         );
@@ -142,8 +151,7 @@ class SampleMenu extends StatelessWidget {
     );
   }
 
-  void _onListCookies(
-      WebViewController controller, BuildContext context) async {
+  void listCookies(WebViewController controller, BuildContext context) async {
     final String cookies =
         await controller.evaluateJavascript('document.cookie');
     Scaffold.of(context).showSnackBar(SnackBar(
@@ -158,32 +166,24 @@ class SampleMenu extends StatelessWidget {
     ));
   }
 
-  void _onAddToCache(WebViewController controller, BuildContext context) async {
-    await controller.evaluateJavascript(
-        'caches.open("test_caches_entry"); localStorage["test_localStorage"] = "dummy_entry";');
-    Scaffold.of(context).showSnackBar(const SnackBar(
-      content: Text('Added a test entry to cache.'),
-    ));
-  }
-
-  void _onListCache(WebViewController controller, BuildContext context) async {
+  void listCache(WebViewController controller, BuildContext context) async {
     await controller.evaluateJavascript('caches.keys()'
         '.then((cacheKeys) => JSON.stringify({"cacheKeys" : cacheKeys, "localStorage" : localStorage}))'
         '.then((caches) => Toaster.postMessage(caches))');
   }
 
-  void _onClearCache(WebViewController controller, BuildContext context) async {
+  void clearCache(WebViewController controller, BuildContext context) async {
     await controller.clearCache();
     Scaffold.of(context).showSnackBar(const SnackBar(
-      content: Text("Cache cleared."),
+      content: Text("ลบข้อมูลในเครื่องเรียบร้อย"),
     ));
   }
 
-  void _onClearCookies(BuildContext context) async {
+  void clearCookies(BuildContext context) async {
     final bool hadCookies = await cookieManager.clearCookies();
-    String message = 'There were cookies. Now, they are gone!';
+    String message = 'ทำการลบคุ้กกี้เรียบร้อย!';
     if (!hadCookies) {
-      message = 'There are no cookies.';
+      message = 'ไม่พบคุ้กกี้';
     }
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(message),
@@ -205,6 +205,17 @@ class SampleMenu extends StatelessWidget {
   }
 }
 
+void _myClearCookies(BuildContext context) async {
+  final bool hadCookies = await CookieManager().clearCookies();
+  String message = 'ทำการลบคุ้กกี้เรียบร้อย!';
+  if (!hadCookies) {
+    message = 'ไม่พบคุ้กกี้';
+  }
+  Scaffold.of(context).showSnackBar(SnackBar(
+    content: Text(message),
+  ));
+}
+
 class NavigationControls extends StatelessWidget {
   const NavigationControls(this._webViewControllerFuture)
       : assert(_webViewControllerFuture != null);
@@ -222,43 +233,20 @@ class NavigationControls extends StatelessWidget {
         final WebViewController controller = snapshot.data;
         return Row(
           children: <Widget>[
+            // IconButton(
+            //   icon: const Icon(Icons.replay),
+            //   onPressed: !webViewReady
+            //       ? null
+            //       : () {
+            //           controller.reload();
+            //         },
+            // ),
             IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
-              onPressed: !webViewReady
-                  ? null
-                  : () async {
-                      if (await controller.canGoBack()) {
-                        await controller.goBack();
-                      } else {
-                        Scaffold.of(context).showSnackBar(
-                          const SnackBar(content: Text("No back history item")),
-                        );
-                        return;
-                      }
-                    },
-            ),
-            IconButton(
-              icon: const Icon(Icons.arrow_forward_ios),
-              onPressed: !webViewReady
-                  ? null
-                  : () async {
-                      if (await controller.canGoForward()) {
-                        await controller.goForward();
-                      } else {
-                        Scaffold.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text("No forward history item")),
-                        );
-                        return;
-                      }
-                    },
-            ),
-            IconButton(
-              icon: const Icon(Icons.replay),
+              icon: const Icon(Icons.delete),
               onPressed: !webViewReady
                   ? null
                   : () {
-                      controller.reload();
+                      _myClearCookies(context);
                     },
             ),
           ],
