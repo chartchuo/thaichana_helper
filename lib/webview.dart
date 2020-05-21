@@ -1,11 +1,4 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-// ignore_for_file: public_member_api_docs
-
 import 'dart:async';
-// import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -35,32 +28,22 @@ class _WebState extends State<Web> {
       // to allow calling Scaffold.of(context) so we can show a snackbar.
       body: Builder(builder: (BuildContext context) {
         return WebView(
-          // initialUrl: 'https://qr.thaichana.com/?appId=0001&shopId=S0000011316',
           initialUrl: widget.initialUrl,
           debuggingEnabled: true,
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController webViewController) {
             _controller.complete(webViewController);
           },
-          // TODO(iskakaushik): Remove this when collection literals makes it to stable.
-          // ignore: prefer_collection_literals
           javascriptChannels: <JavascriptChannel>[
             _toasterJavascriptChannel(context),
           ].toSet(),
-          // navigationDelegate: (NavigationRequest request) {
-          //   if (request.url.startsWith('https://www.youtube.com/')) {
-          //     print('blocking navigation to $request}');
-          //     return NavigationDecision.prevent;
-          //   }
-          //   print('allowing navigation to $request');
-          //   return NavigationDecision.navigate;
-          // },
           onPageStarted: (String url) {
             print('Page started loading: $url');
           },
           onPageFinished: (String url) {
             print('Page finished loading: $url');
           },
+          
           gestureNavigationEnabled: true,
         );
       }),
@@ -153,23 +136,11 @@ class SampleMenu extends StatelessWidget {
               value: MenuOptions.clearCache,
               child: Text('Clear cache'),
             ),
-            // const PopupMenuItem<MenuOptions>(
-            //   value: MenuOptions.navigationDelegate,
-            //   child: Text('Navigation Delegate example'),
-            // ),
           ],
         );
       },
     );
   }
-
-  // void _onShowUserAgent(
-  //     WebViewController controller, BuildContext context) async {
-  //   // Send a message with the user agent string to the Toaster JavaScript channel we registered
-  //   // with the WebView.
-  //   await controller.evaluateJavascript(
-  //       'Toaster.postMessage("User Agent: " + navigator.userAgent);');
-  // }
 
   void _onListCookies(
       WebViewController controller, BuildContext context) async {
@@ -218,13 +189,6 @@ class SampleMenu extends StatelessWidget {
       content: Text(message),
     ));
   }
-
-  // void _onNavigationDelegateExample(
-  //     WebViewController controller, BuildContext context) async {
-  //   final String contentBase64 =
-  //       base64Encode(const Utf8Encoder().convert(kNavigationExamplePage));
-  //   await controller.loadUrl('data:text/html;base64,$contentBase64');
-  // }
 
   Widget _getCookieList(String cookies) {
     if (cookies == null || cookies == '""') {

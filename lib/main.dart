@@ -4,11 +4,8 @@ import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'scanview.dart';
-import 'webview.dart';
 
 void main() => runApp(MyApp());
-
-// void main() => runApp(MaterialApp(home: Web(initialUrl: 'https://qr.thaichana.com/?appId=0001&shopId=S0000011316',)));
 
 class MyApp extends StatefulWidget {
   @override
@@ -57,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                 Map<PermissionGroup, PermissionStatus> permissions =
                     await PermissionHandler()
                         .requestPermissions([PermissionGroup.camera]);
-                print(permissions);
+                // print(permissions);
                 if (permissions[PermissionGroup.camera] ==
                     PermissionStatus.granted) {
                       Navigator.push(context,
@@ -76,7 +73,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onScan(String v, List<Offset> offsets) {
-    print([v, offsets]);
+    // print([v, offsets]);
     setState(() {
       data = v;
     });
@@ -85,7 +82,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 }
