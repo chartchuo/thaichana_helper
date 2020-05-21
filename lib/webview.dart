@@ -87,7 +87,7 @@ class _WebState extends State<Web> {
 
   @override
   void dispose() {
-    webMenu.clearCookies(context);
+    // webMenu.clearCookies(context);
     super.dispose();
   }
 }

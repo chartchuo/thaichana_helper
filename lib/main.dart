@@ -29,8 +29,17 @@ class HomePage extends StatelessWidget {
                     .requestPermissions([PermissionGroup.camera]);
             if (permissions[PermissionGroup.camera] ==
                 PermissionStatus.granted) {
-              Navigator.push(
+              final result = await Navigator.push(
                   context, MaterialPageRoute(builder: (context) => ScanView()));
+              if (result == null) return;
+              final uri = Uri.parse(result.toString());
+              if (uri.host == 'qr.thaichana.com') {
+                await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            Web(initialUrl: result.toString())));
+              }
             }
           },
           child: Icon(

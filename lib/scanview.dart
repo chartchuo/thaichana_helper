@@ -32,9 +32,13 @@ class _ScanViewState extends State<ScanView> {
   }
 
   Future onScan(String data) async {
-    Navigator.pop(context);
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => Web(initialUrl: data)));
+    var uri= Uri.parse(data);
+    if(uri.host!='qr.thaichana.com'){
+      _key.currentState.startScan();
+    }
+    Navigator.pop(context,data);
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: (context) => Web(initialUrl: data)));
     // await showCupertinoDialog(
     //   context: context,
     //   builder: (context) {
