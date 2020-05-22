@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
         "/webview": (context) => Web(),
       },
     );
-    // return MaterialApp(home: Web(initialUrl: 'https://google.com'));
   }
 }
 
@@ -64,8 +63,8 @@ class HomePage extends StatelessWidget {
               if (result == null) return;
               final uri = Uri.parse(result.toString());
               if (uri.host == 'qr.thaichana.com') {
-                await Navigator.pushNamed(
-                    context,'/webview', arguments: ScanedUrl(result.toString()));
+                await Navigator.pushNamed(context, '/webview',
+                    arguments: ScanedUrl(result.toString()));
               }
             }
           },
