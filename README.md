@@ -1,16 +1,8 @@
-# thaichana_helper
+# ตัวช่วยไทยชนะ
 
-A new Flutter project.
 
-## Getting Started
+ตัวช่วยสำหรับ check in และ check out ไทยชนะ QR code 
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- รวดเร็ว ลดขั้นตอนการ check in / check out
+- เพิ่มความเป็นส่วนตัว เพราะมี browser ในตัว แยกจาก browser ที่เราใช้งานประจำ ไม่ต้องห่วงว่าข้อมูล cookie ส่วนตัวจะรั่วไหล
+- ปลอดภัยเพราะ เป็น opensource สามารถตรวจสอบ ได้ถึง source code ของตัวโปรแกรมได้ที่ https://github.com/chartchuo/thaichana_helper
