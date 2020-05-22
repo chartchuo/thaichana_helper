@@ -35,6 +35,7 @@ class _ScanViewState extends State<ScanView> {
     var uri= Uri.parse(data);
     if(uri.host!='qr.thaichana.com'){
       _key.currentState.startScan();
+      return;
     }
     Navigator.pop(context,data);
     // Navigator.push(context,

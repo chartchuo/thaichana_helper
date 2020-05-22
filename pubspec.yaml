@@ -19,7 +19,7 @@ dependencies:
   flutter_qr_reader: ^1.0.3
   webview_flutter: ^0.3.22
   shared_preferences: ^0.5.7+3
-  share: ^0.5.3
+  # share: ^0.5.3
 
 dev_dependencies:
   flutter_test:

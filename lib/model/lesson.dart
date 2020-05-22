@@ -8,3 +8,10 @@ class Lesson {
   Lesson(
       {this.title, this.level, this.indicatorValue, this.price, this.content});
 }
+
+
+class ScanedUrl {
+  final String url;
+
+  ScanedUrl(this.url);
+}

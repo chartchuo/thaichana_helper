@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'model/lesson.dart';
 
 class Web extends StatefulWidget {
-  final String initialUrl;
-  Web({Key key, this.initialUrl}) : super(key: key);
+  // final String initialUrl;
+  // Web({Key key, this.initialUrl}) : super(key: key);
   @override
   _WebState createState() => _WebState();
 }
@@ -44,8 +45,10 @@ class _WebState extends State<Web> {
       //   },
       // ),
       body: Builder(builder: (BuildContext context) {
+        final ScanedUrl args = ModalRoute.of(context).settings.arguments;
         return WebView(
-          initialUrl: widget.initialUrl,
+          // initialUrl: widget.initialUrl,
+          initialUrl: args.url,
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController webViewController) {
             _controller.complete(webViewController);
@@ -107,6 +110,7 @@ class WebMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return FutureBuilder<WebViewController>(
       future: controller,
       builder:

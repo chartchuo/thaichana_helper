@@ -14,7 +14,7 @@ class QrcodeReaderView extends StatefulWidget {
                      Key key,
                      @required this.onScan,
                      this.headerWidget,
-                     this.boxLineColor = Colors.cyanAccent,
+                     this.boxLineColor = Colors.red,
                      this.helpWidget,
                      this.scanBoxRatio = 0.85,
                    }) : super(key: key);
@@ -34,6 +34,8 @@ class QrcodeReaderViewState extends State<QrcodeReaderView>
   AnimationController _animationController;
   bool openFlashlight;
   Timer _timer;
+  String helpText="กรุณาส่องรหัส QR ให้อยู่ในกรอบ";
+
   @override
   void initState() {
     super.initState();
@@ -82,6 +84,12 @@ class QrcodeReaderViewState extends State<QrcodeReaderView>
   bool isScan = false;
   Future _onQrBack(data, _) async {
     if (isScan == true) return;
+    final uri = Uri.parse(data);
+    if(uri.host!='qr.thaichana.com'){
+      helpText = "ไม่ใช้ QR ไทยชนะ";
+      isScan = false;
+      return;
+    }
     isScan = true;
     stopScan();
     await widget.onScan(data);
@@ -164,7 +172,7 @@ class QrcodeReaderViewState extends State<QrcodeReaderView>
                 alignment: Alignment.center,
                 child: DefaultTextStyle(
                   style: TextStyle(color: Colors.white),
-                  child: widget.helpWidget ?? Text("กรุณาส่องรหัส QR ให้อยู่ในกรอบ"),
+                  child: widget.helpWidget ?? Text(helpText),
                 ),
               ),
             ),
