@@ -61,8 +61,8 @@ class HomePage extends StatelessWidget {
                     arguments: ScanedUrl(
                         'https://qr.thaichana.com/?appId=0001&shopId=S0000000003'));
               },
-              child: Text("ทดสอบเช็คอิน/เช๊คเอาท์"),
-              color: Colors.black12,
+              child: Text("ลงทะเบียน และ ลองเช็คอิน/เช๊คเอาท์"),
+              color: Colors.lightBlue,
             ),
             FlatButton(
               onPressed: () async {
@@ -81,11 +81,16 @@ class HomePage extends StatelessWidget {
                   }
                 }
               },
-              child: Icon(
-                Icons.photo_camera,
-                size: 100,
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.photo_camera,
+                    size: 100,
+                  ),
+                  Text('Scan QR Code')
+                ],
               ),
-              color: Colors.blue,
+              color: Colors.lightBlue,
             ),
           ],
         ),
