@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:thaichana_helper/model/lesson.dart';
+import 'package:thaichana_helper/model.dart';
 
 import 'scanview.dart';
 import 'webview.dart';
@@ -55,42 +55,48 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            FlatButton(
-              onPressed: () async {
-                await Navigator.pushNamed(context, '/webview',
-                    arguments: ScanedUrl(
-                        'https://qr.thaichana.com/?appId=0001&shopId=S0000000003'));
-              },
-              child: Text("ลงทะเบียน และ ลองเช็คอิน/เช๊คเอาท์"),
-              color: Colors.lightBlue,
-            ),
-            FlatButton(
-              onPressed: () async {
-                Map<PermissionGroup, PermissionStatus> permissions =
-                    await PermissionHandler()
-                        .requestPermissions([PermissionGroup.camera]);
-                if (permissions[PermissionGroup.camera] ==
-                    PermissionStatus.granted) {
-                  final result =
-                      await Navigator.pushNamed(context, '/scanview');
-                  if (result == null) return;
-                  final uri = Uri.parse(result.toString());
-                  if (uri.host == 'qr.thaichana.com') {
-                    await Navigator.pushNamed(context, '/webview',
-                        arguments: ScanedUrl(result.toString()));
-                  }
-                }
-              },
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.photo_camera,
-                    size: 100,
-                  ),
-                  Text('Scan QR Code')
-                ],
+            ListTile(
+              title: FlatButton(
+                padding: EdgeInsets.all(16),
+                onPressed: () async {
+                  await Navigator.pushNamed(context, '/webview',
+                      arguments: ScanedUrl(
+                          'https://qr.thaichana.com/?appId=0001&shopId=S0000000003'));
+                },
+                child: Text("ลงทะเบียน และ ลองเช็คอิน/เช๊คเอาท์"),
+                color: Colors.grey,
               ),
-              color: Colors.lightBlue,
+            ),
+            ListTile(
+              title: FlatButton(
+                padding: EdgeInsets.all(16),
+                onPressed: () async {
+                  Map<PermissionGroup, PermissionStatus> permissions =
+                      await PermissionHandler()
+                          .requestPermissions([PermissionGroup.camera]);
+                  if (permissions[PermissionGroup.camera] ==
+                      PermissionStatus.granted) {
+                    final result =
+                        await Navigator.pushNamed(context, '/scanview');
+                    if (result == null) return;
+                    final uri = Uri.parse(result.toString());
+                    if (uri.host == 'qr.thaichana.com') {
+                      await Navigator.pushNamed(context, '/webview',
+                          arguments: ScanedUrl(result.toString()));
+                    }
+                  }
+                },
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.photo_camera,
+                      size: 100,
+                    ),
+                    Text('สแกน QR Code')
+                  ],
+                ),
+                color: Colors.blue,
+              ),
             ),
           ],
         ),

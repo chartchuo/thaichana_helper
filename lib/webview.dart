@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'model/lesson.dart';
+import 'model.dart';
 
 class Web extends StatefulWidget {
   // final String initialUrl;
