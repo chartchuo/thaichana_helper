@@ -55,7 +55,11 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text("ขั้นตอน"),
+            ListTile(
+              title: Text("ขั้นตอน"),
+              subtitle: Text(
+                  '*สำหรับบางคนที่พบปัญหา หลังการติดตั้งโปรแกรมครั้งแรกแล้วเครื่องแฮงค์ ให้ทำการปิดเครื่องมือถือแล้วเปิดขึ้นใหม่จะใช้งานได้ปกติ (ถ้าปิดเครื่องมือถือไม่ได้ ให้กดปุ่มลดเสียง+ปุ่มปิดเครื่องค้างไว้ 10 วินาที'),
+            ),
             ListTile(
               title: FlatButton(
                 padding: EdgeInsets.all(16),
