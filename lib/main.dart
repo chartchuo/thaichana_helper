@@ -58,10 +58,11 @@ class HomePage extends StatelessWidget {
             FlatButton(
               onPressed: () async {
                 await Navigator.pushNamed(context, '/webview',
-                        arguments: ScanedUrl('https://qr.thaichana.com/?appId=0001&shopId=S0000000003'));
+                    arguments: ScanedUrl(
+                        'https://qr.thaichana.com/?appId=0001&shopId=S0000000003'));
               },
               child: Text("ทดสอบเช็คอิน/เช๊คเอาท์"),
-              // color: Colors.blue,
+              color: Colors.black12,
             ),
             FlatButton(
               onPressed: () async {
@@ -70,7 +71,8 @@ class HomePage extends StatelessWidget {
                         .requestPermissions([PermissionGroup.camera]);
                 if (permissions[PermissionGroup.camera] ==
                     PermissionStatus.granted) {
-                  final result = await Navigator.pushNamed(context, '/scanview');
+                  final result =
+                      await Navigator.pushNamed(context, '/scanview');
                   if (result == null) return;
                   final uri = Uri.parse(result.toString());
                   if (uri.host == 'qr.thaichana.com') {
