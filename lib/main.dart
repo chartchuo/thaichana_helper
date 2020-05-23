@@ -55,6 +55,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            Text("ขั้นตอน"),
             ListTile(
               title: FlatButton(
                 padding: EdgeInsets.all(16),
@@ -63,7 +64,8 @@ class HomePage extends StatelessWidget {
                       arguments: ScanedUrl(
                           'https://qr.thaichana.com/?appId=0001&shopId=S0000000003'));
                 },
-                child: Text("ลงทะเบียน และ ลองเช็คอิน/เช๊คเอาท์"),
+                child: Text(
+                    "1.กดเพื่อลงทะเบียน(ครั้งแรก) และ ลองเช็คอิน/เช๊คเอาท์"),
                 color: Colors.grey,
               ),
             ),
@@ -92,7 +94,7 @@ class HomePage extends StatelessWidget {
                       Icons.photo_camera,
                       size: 100,
                     ),
-                    Text('สแกน QR Code')
+                    Text('2. กดเพื่อสแกน QR โค๊ดของร้านค้าที่เข้าใช้บริการ')
                   ],
                 ),
                 color: Colors.blue,
