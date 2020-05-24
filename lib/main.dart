@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thaichana_helper/model.dart';
 
 import 'scanview.dart';
 import 'webview.dart';
+import 'webview2.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,7 +17,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => HomePage(),
         '/scanview': (context) => ScanView(),
-        "/webview": (context) => Web(),
+        "/webviewAdv": (context) => WebviewAdv(),
+        "/webviewNorm": (context) => WebviewNorm(),
       },
     );
   }
@@ -44,7 +47,14 @@ class SlideRightRoute extends PageRouteBuilder {
         );
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool webviewAdv = false;
+  String webviewRoute = '/webviewNorm';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,21 +66,21 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             ListTile(
-              title: Text("ขั้นตอน"),
-              subtitle: Text(
-                  '*สำหรับบางคนที่พบปัญหา หลังการติดตั้งโปรแกรมครั้งแรกแล้วเครื่องแฮงค์ ให้ทำการปิดเครื่องมือถือแล้วเปิดขึ้นใหม่จะใช้งานได้ปกติ (ถ้าปิดเครื่องมือถือไม่ได้ ให้กดปุ่มลดเสียง+ปุ่มปิดเครื่องค้างไว้ 10 วินาที'),
-            ),
-            ListTile(
-              title: FlatButton(
-                padding: EdgeInsets.all(16),
-                onPressed: () async {
-                  await Navigator.pushNamed(context, '/webview',
-                      arguments: ScanedUrl(
-                          'https://qr.thaichana.com/?appId=0001&shopId=S0000000003'));
-                },
-                child: Text(
-                    "1.กดเพื่อลงทะเบียน(ครั้งแรก) และ ลองเช็คอิน/เช๊คเอาท์"),
-                color: Colors.grey,
+              title: Column(
+                children: <Widget>[
+                  Text("ขั้นตอน"),
+                  FlatButton(
+                    padding: EdgeInsets.all(16),
+                    onPressed: () async {
+                      await Navigator.pushNamed(context, webviewRoute,
+                          arguments: ScanedUrl(
+                              'https://qr.thaichana.com/?appId=0001&shopId=S0000000003'));
+                    },
+                    child: Text(
+                        "1.กดเพื่อลงทะเบียน(ครั้งแรก) และ ลองเช็คอิน/เช๊คเอาท์"),
+                    color: Colors.grey,
+                  ),
+                ],
               ),
             ),
             ListTile(
@@ -87,7 +97,7 @@ class HomePage extends StatelessWidget {
                     if (result == null) return;
                     final uri = Uri.parse(result.toString());
                     if (uri.host == 'qr.thaichana.com') {
-                      await Navigator.pushNamed(context, '/webview',
+                      await Navigator.pushNamed(context, webviewRoute,
                           arguments: ScanedUrl(result.toString()));
                     }
                   }
@@ -103,10 +113,51 @@ class HomePage extends StatelessWidget {
                 ),
                 color: Colors.blue,
               ),
+              subtitle: Text(
+                  '*สำหรับบางคนที่พบปัญหา หลังการติดตั้งโปรแกรมครั้งแรกแล้วเครื่องแฮงค์ ให้ทำการปิดเครื่องมือถือแล้วเปิดขึ้นใหม่จะใช้งานได้ปกติ (ถ้าปิดเครื่องมือถือไม่ได้ ให้กดปุ่มลดเสียง+ปุ่มปิดเครื่องค้างไว้ 10 วินาที'),
+            ),
+            SwitchListTile(
+              title: Text('web view ชั้นสูง'),
+              value: webviewAdv,
+              onChanged: (value) {
+                _setAdvWebview(value);
+                _savePreference();
+              },
             ),
           ],
         ),
       ),
     );
+  }
+
+  initState() {
+    super.initState();
+    _loadPreference();
+  }
+
+  _setAdvWebview(bool value) {
+    setState(() {
+      webviewAdv = value;
+      if (value)
+        webviewRoute = '/webviewAdv';
+      else
+        webviewRoute = '/webviewNorm';
+    });
+  }
+
+  _savePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('webviewAdv', webviewAdv);
+  }
+
+  _loadPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      _setAdvWebview(prefs.getBool('webviewAdv'));
+    } catch (e) {
+      setState(() {
+        _setAdvWebview(false);
+      });
+    }
   }
 }

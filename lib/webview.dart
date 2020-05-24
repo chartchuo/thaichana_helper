@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'model.dart';
 
-class Web extends StatefulWidget {
-  // final String initialUrl;
-  // Web({Key key, this.initialUrl}) : super(key: key);
+class WebviewAdv extends StatefulWidget {
   @override
   _WebState createState() => _WebState();
 }
 
-class _WebState extends State<Web> {
+class _WebState extends State<WebviewAdv> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
 
@@ -21,40 +19,19 @@ class _WebState extends State<Web> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('WebView'),
-        // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
         actions: <Widget>[
           NavigationControls(_controller.future),
           webMenu,
         ],
       ),
-      // body: WebView(
-      //   initialUrl: widget.initialUrl,
-      //   debuggingEnabled: true,
-      //   javascriptMode: JavascriptMode.unrestricted,
-      //   onWebViewCreated: (WebViewController webViewController) {
-      //     _controller.complete(webViewController);
-      //   },
-      //   javascriptChannels: <JavascriptChannel>[
-      //     _toasterJavascriptChannel(context),
-      //   ].toSet(),
-      //   onPageStarted: (String url) {
-      //     print('Page started loading: $url');
-      //   },
-      //   onPageFinished: (String url) {
-      //     print('Page finished loading: $url');
-      //   },
-      // ),
       body: Builder(builder: (BuildContext context) {
         final ScanedUrl args = ModalRoute.of(context).settings.arguments;
         return WebView(
-          // initialUrl: widget.initialUrl,
           initialUrl: args.url,
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController webViewController) {
             _controller.complete(webViewController);
           },
-          // TODO(iskakaushik): Remove this when collection literals makes it to stable.
-          // ignore: prefer_collection_literals
           javascriptChannels: <JavascriptChannel>[
             _toasterJavascriptChannel(context),
           ].toSet(),
@@ -90,7 +67,6 @@ class _WebState extends State<Web> {
 
   @override
   void dispose() {
-    // webMenu.clearCookies(context);
     super.dispose();
   }
 }
@@ -110,7 +86,6 @@ class WebMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return FutureBuilder<WebViewController>(
       future: controller,
       builder:
@@ -234,17 +209,8 @@ class NavigationControls extends StatelessWidget {
           (BuildContext context, AsyncSnapshot<WebViewController> snapshot) {
         final bool webViewReady =
             snapshot.connectionState == ConnectionState.done;
-        final WebViewController controller = snapshot.data;
         return Row(
           children: <Widget>[
-            // IconButton(
-            //   icon: const Icon(Icons.replay),
-            //   onPressed: !webViewReady
-            //       ? null
-            //       : () {
-            //           controller.reload();
-            //         },
-            // ),
             IconButton(
               icon: const Icon(Icons.delete),
               onPressed: !webViewReady

@@ -4,6 +4,11 @@
 	<dict>
 		<key>io.flutter.embedded_views_preview</key>
 		<string>YES</string>
+		<key>NSAppTransportSecurity</key>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleExecutable</key>
