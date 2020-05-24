@@ -68,18 +68,18 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: Column(
                 children: <Widget>[
-                  Text("ขั้นตอน"),
-                  FlatButton(
-                    padding: EdgeInsets.all(16),
-                    onPressed: () async {
-                      await Navigator.pushNamed(context, webviewRoute,
-                          arguments: ScanedUrl(
-                              'https://qr.thaichana.com/?appId=0001&shopId=S0000000003'));
-                    },
-                    child: Text(
-                        "1.กดเพื่อลงทะเบียน(ครั้งแรก) และ ลองเช็คอิน/เช๊คเอาท์"),
-                    color: Colors.grey,
-                  ),
+                  // Text("ขั้นตอน"),
+                  // FlatButton(
+                  //   padding: EdgeInsets.all(16),
+                  //   onPressed: () async {
+                  //     await Navigator.pushNamed(context, webviewRoute,
+                  //         arguments: ScanedUrl(
+                  //             'https://qr.thaichana.com/?appId=0001&shopId=S0000000003'));
+                  //   },
+                  //   child: Text(
+                  //       "1.กดเพื่อลงทะเบียน(ครั้งแรก) และ ลองเช็คอิน/เช๊คเอาท์"),
+                  //   color: Colors.grey,
+                  // ),
                 ],
               ),
             ),
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                       Icons.photo_camera,
                       size: 100,
                     ),
-                    Text('2. กดเพื่อสแกน QR โค๊ดของร้านค้าที่เข้าใช้บริการ')
+                    Text('กดเพื่อสแกน QR โค๊ดของร้านค้าที่เข้าใช้บริการ')
                   ],
                 ),
                 color: Colors.blue,

@@ -13,7 +13,7 @@ class _WebState extends State<WebviewNorm> {
     final ScanedUrl args = ModalRoute.of(context).settings.arguments;
     return WebviewScaffold(
       appBar: AppBar(
-        title: const Text('WebView (Backup)'),
+        title: const Text('WebView'),
       ),
       url: args.url,
     );
