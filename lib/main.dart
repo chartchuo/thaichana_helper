@@ -59,30 +59,41 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ตัวช่วยไทยชนะ'),
+        title: const Text('สแกนไทยชนะ'),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              child: Center(
+                child: Image(image: AssetImage('assets/icon/icon.png')),
+              ),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+            ),
+            SwitchListTile(
+              title: Text('การใช้งานขั้นสูง'),
+              value: webviewAdv,
+              onChanged: (value) {
+                _setAdvWebview(value);
+                _savePreference();
+              },
+            ),
+            ListTile(
+              title: Text('เกียวกับสแกนไทยชนะ'),
+              onTap: () {
+                showDialog(context: context, builder: aboutBuilder);
+              },
+            ),
+          ],
+        ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            ListTile(
-              title: Column(
-                children: <Widget>[
-                  // Text("ขั้นตอน"),
-                  // FlatButton(
-                  //   padding: EdgeInsets.all(16),
-                  //   onPressed: () async {
-                  //     await Navigator.pushNamed(context, webviewRoute,
-                  //         arguments: ScanedUrl(
-                  //             'https://qr.thaichana.com/?appId=0001&shopId=S0000000003'));
-                  //   },
-                  //   child: Text(
-                  //       "1.กดเพื่อลงทะเบียน(ครั้งแรก) และ ลองเช็คอิน/เช๊คเอาท์"),
-                  //   color: Colors.grey,
-                  // ),
-                ],
-              ),
-            ),
             ListTile(
               title: FlatButton(
                 padding: EdgeInsets.all(16),
@@ -113,16 +124,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 color: Colors.blue,
               ),
-              subtitle: Text(
-                  '*สำหรับบางคนที่พบปัญหา หลังการติดตั้งโปรแกรมครั้งแรกแล้วเครื่องแฮงค์ ให้ทำการปิดเครื่องมือถือแล้วเปิดขึ้นใหม่จะใช้งานได้ปกติ (ถ้าปิดเครื่องมือถือไม่ได้ ให้กดปุ่มลดเสียง+ปุ่มปิดเครื่องค้างไว้ 10 วินาที'),
-            ),
-            SwitchListTile(
-              title: Text('web view ชั้นสูง'),
-              value: webviewAdv,
-              onChanged: (value) {
-                _setAdvWebview(value);
-                _savePreference();
-              },
             ),
           ],
         ),
@@ -160,4 +161,39 @@ class _HomePageState extends State<HomePage> {
       });
     }
   }
+}
+
+Widget aboutBuilder(BuildContext context) {
+  return AlertDialog(
+    title: Text('เกี่ยวกับ สแกนไทยชนะ'),
+    content: SingleChildScrollView(
+      child: ListBody(
+        children: [
+          ListTile(
+            title: Text(
+                'ตัวช่วยสแกน สำหรับ check in และ check out ไทยชนะ QR code'),
+          ),
+          ListTile(
+            subtitle: Text('- รวดเร็ว ลดขั้นตอนการ check in / check out'),
+          ),
+          ListTile(
+            subtitle: Text(
+                '- เพิ่มความเป็นส่วนตัว เพราะมี browser ในตัว แยกจาก browser ที่เราใช้งานประจำ ไม่ต้องห่วงว่าข้อมูล cookie ส่วนตัวจะรั่วไหล'),
+          ),
+          ListTile(
+            subtitle: Text(
+                '- ปลอดภัยเพราะ เป็น opensource สามารถตรวจสอบ ได้ถึง source code ของตัวโปรแกรมได้ที่ https://github.com/chartchuo/thaichana_helper'),
+          ),
+        ],
+      ),
+    ),
+    actions: [
+      FlatButton(
+        child: Text('Ok'),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      )
+    ],
+  );
 }

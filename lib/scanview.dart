@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'qr_reader.dart';
-import 'webview.dart';
 
 class ScanView extends StatefulWidget {
   ScanView({Key key}) : super(key: key);

@@ -3,7 +3,7 @@ description: Thai chana helper application.
 
 publish_to: 'none' 
 
-version: 1.0.9+9
+version: 1.0.10+10
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -21,17 +21,19 @@ dependencies:
   shared_preferences: ^0.5.7+3
   # share: ^0.5.3
   flutter_webview_plugin: ^0.3.11
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: "^0.7.3"
 
 flutter_icons:
-  android: "ตัวช่วยไทยชนะ"
+  android: "สแกนไทยชนะ"
   ios: true
   image_path: "assets/icon/icon.png"
   
 flutter:
+  assets:
+    - assets/icon/icon.png
 
   uses-material-design: true
