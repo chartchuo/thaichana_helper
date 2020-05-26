@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thaichana_helper/model.dart';
+import 'package:package_info/package_info.dart';
 
 import 'scanview.dart';
 import 'webview.dart';
@@ -53,6 +54,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  PackageInfo packageInfo;
   bool webviewAdv = false;
   String webviewRoute = '/webviewNorm';
   @override
@@ -133,7 +135,12 @@ class _HomePageState extends State<HomePage> {
 
   initState() {
     super.initState();
+    _getPackageInfo();
     _loadPreference();
+  }
+
+  _getPackageInfo() async {
+    packageInfo = await PackageInfo.fromPlatform();
   }
 
   _setAdvWebview(bool value) {
@@ -161,39 +168,43 @@ class _HomePageState extends State<HomePage> {
       });
     }
   }
-}
 
-Widget aboutBuilder(BuildContext context) {
-  return AlertDialog(
-    title: Text('เกี่ยวกับ สแกนไทยชนะ'),
-    content: SingleChildScrollView(
-      child: ListBody(
-        children: [
-          ListTile(
-            title: Text(
-                'ตัวช่วยสแกน สำหรับ check in และ check out ไทยชนะ QR code'),
-          ),
-          ListTile(
-            subtitle: Text('- รวดเร็ว ลดขั้นตอนการ check in / check out'),
-          ),
-          ListTile(
-            subtitle: Text(
-                '- เพิ่มความเป็นส่วนตัว เพราะมี browser ในตัว แยกจาก browser ที่เราใช้งานประจำ ไม่ต้องห่วงว่าข้อมูล cookie ส่วนตัวจะรั่วไหล'),
-          ),
-          ListTile(
-            subtitle: Text(
-                '- ปลอดภัยเพราะ เป็น opensource สามารถตรวจสอบ ได้ถึง source code ของตัวโปรแกรมได้ที่ https://github.com/chartchuo/thaichana_helper'),
-          ),
-        ],
+  Widget aboutBuilder(BuildContext context) {
+    return AlertDialog(
+      title: Text('เกี่ยวกับ สแกนไทยชนะ'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: [
+            ListTile(
+              title: Text('Version ' + packageInfo.version),
+              subtitle: Text('Build ' + packageInfo.buildNumber),
+            ),
+            ListTile(
+              title: Text(
+                  'ตัวช่วยสแกน สำหรับ check in และ check out ไทยชนะ QR code'),
+            ),
+            ListTile(
+              subtitle: Text('  - รวดเร็ว ลดขั้นตอนการ check in / check out'),
+            ),
+            ListTile(
+              subtitle: Text(
+                  '  - เพิ่มความเป็นส่วนตัว เพราะมี browser ในตัว แยกจาก browser ที่เราใช้งานประจำ ไม่ต้องห่วงว่าข้อมูล cookie ส่วนตัวจะรั่วไหล'),
+            ),
+            ListTile(
+              subtitle: Text(
+                  '  - ปลอดภัยเพราะ เป็น opensource สามารถตรวจสอบ ได้ถึง source code ของตัวโปรแกรมได้ที่ https://github.com/chartchuo/thaichana_helper'),
+            ),
+          ],
+        ),
       ),
-    ),
-    actions: [
-      FlatButton(
-        child: Text('Ok'),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      )
-    ],
-  );
+      actions: [
+        FlatButton(
+          child: Text('Ok'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
+    );
+  }
 }
