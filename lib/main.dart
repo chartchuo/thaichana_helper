@@ -5,8 +5,8 @@ import 'package:thaichana_helper/model.dart';
 import 'package:package_info/package_info.dart';
 
 import 'scanview.dart';
-import 'webview.dart';
-import 'webview2.dart';
+import 'webview_adv.dart';
+import 'webview_normal.dart';
 
 void main() => runApp(MyApp());
 
@@ -57,6 +57,8 @@ class _HomePageState extends State<HomePage> {
   PackageInfo packageInfo;
   bool webviewAdv = false;
   String webviewRoute = '/webviewNorm';
+  ScrollController drawController;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,13 +68,14 @@ class _HomePageState extends State<HomePage> {
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
+          controller: drawController,
           children: [
             DrawerHeader(
               child: Center(
                 child: Image(image: AssetImage('assets/icon/icon.png')),
               ),
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Colors.white,
               ),
             ),
             SwitchListTile(
@@ -86,6 +89,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: Text('เกียวกับสแกนไทยชนะ'),
               onTap: () {
+                Navigator.pop(context);
                 showDialog(context: context, builder: aboutBuilder);
               },
             ),
@@ -97,7 +101,8 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             ListTile(
-              title: FlatButton(
+              title: RaisedButton(
+                elevation: 8,
                 padding: EdgeInsets.all(16),
                 onPressed: () async {
                   Map<PermissionGroup, PermissionStatus> permissions =
